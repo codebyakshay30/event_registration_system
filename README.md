@@ -82,18 +82,3 @@ Extra safeguards: a unique index on (event, student) prevents double registratio
 ## Deployment
 **Backend (Render/Railway)**: push `backend/` to GitHub, create a Web Service, build `npm install`, start `npm start`. Add env vars: `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL` (your Vercel URL). In MongoDB Atlas > Network Access allow `0.0.0.0/0`.
 **Frontend (Vercel/Netlify)**: import `frontend/`, build `npm run build`, output `dist`. Add env var `VITE_API_URL=https://<your-backend>.onrender.com/api`. For Netlify add a `_redirects` file containing `/* /index.html 200`; Vercel needs a `vercel.json` rewrite of all paths to `/index.html` so page refresh works.
-
-## Viva Q&A
-- **Why JWT?** Stateless login: server signs a token with JWT_SECRET; the client sends it in the Authorization header on each request.
-- **Authentication vs authorization?** `protect` proves who you are; `authorize('organizer')` checks what you may do.
-- **How are passwords stored?** Hashed with bcrypt in a `pre('save')` hook; never returned (`select: false`).
-- **Why store registeredCount instead of counting registrations?** Fast reads on the list page; kept correct by atomic `$inc`.
-- **What is `populate`?** Replaces an ObjectId reference with the referenced document (e.g. organizer name).
-- **What is a virtual?** A computed field (`isFull`, `seatsLeft`) not stored in the DB.
-- **What is middleware?** A function that runs before the controller and can stop the request.
-- **What happens on simultaneous last-seat clicks?** The atomic update lets exactly one succeed; the other gets "event is full".
-- **Why is business logic in the backend?** The frontend can be bypassed; the server is the single source of truth.
-- **Possible future work:** email confirmation, waiting list, pagination, unit tests.
-
-## Demo script (5 minutes)
-1. Show folder structure and schemas. 2. Postman "Capacity rule demo" folder: student 1 succeeds, student 2 gets "event is full". 3. Login as organizer in React, create an event with capacity 1. 4. Register as a student, then show the Full badge and the participant table as organizer. 5. Show a student hitting an organizer route: 403.
