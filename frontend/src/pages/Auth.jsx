@@ -5,7 +5,7 @@ import { useAuth } from '../AuthContext.jsx';
 
 export default function Auth({ mode }) {
   const isSignup = mode === 'signup';
-  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'student' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'student', organizerCode: '' });
   const [error, setError] = useState('');
   const { saveSession } = useAuth();
   const navigate = useNavigate();
@@ -34,6 +34,11 @@ export default function Auth({ mode }) {
             <option value="student">Student</option>
             <option value="organizer">Organizer</option>
           </select>
+        </label>
+      )}
+      {isSignup && form.role === 'organizer' && (
+        <label>Organizer code
+          <input name="organizerCode" value={form.organizerCode} onChange={set} required />
         </label>
       )}
       <button className="btn">{isSignup ? 'Sign up' : 'Log in'}</button>

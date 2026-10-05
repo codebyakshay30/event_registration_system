@@ -63,7 +63,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Org One\",\n  \"email\": \"org1@test.com\",\n  \"password\": \"secret123\",\n  \"role\": \"organizer\"\n}"
+              "raw": "{\n  \"name\": \"Org One\",\n  \"email\": \"org1@test.com\",\n  \"password\": \"secret123\",\n  \"role\": \"organizer\",\n  \"organizerCode\": \"your_secret_code\"\n}"
             }
           }
         },

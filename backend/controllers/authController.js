@@ -7,7 +7,10 @@ const send = (res, status, user) =>
 
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, organizerCode } = req.body;
+    if (role === 'organizer' && (!process.env.ORGANIZER_CODE || organizerCode !== process.env.ORGANIZER_CODE)) {
+      return res.status(403).json({ message: 'Invalid organizer code' });
+    }
     if (await User.findOne({ email })) return res.status(409).json({ message: 'Email already registered' });
     const user = await User.create({ name, email, password, role: role === 'organizer' ? 'organizer' : 'student' });
     send(res, 201, user);
