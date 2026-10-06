@@ -24,7 +24,7 @@ input:focus, select:focus, textarea:focus, .btn:focus-visible { outline:2px soli
 .alert { padding:10px 14px; border-radius:7px; margin:12px 0; }
 .alert.error { background:#fde8ea; color:#8f1d2b; } .alert.success { background:#dcf5ea; color:#0a5c3f; }
 .badge { font-size:.78rem; font-weight:700; padding:3px 10px; border-radius:99px; white-space:nowrap; }
-.badge.open { background:#dcf5ea; color:var(--ok); } .badge.full { background:#fde8ea; color:var(--bad); }
+.badge.open { background:#dcf5ea; color:var(--ok); } .badge.full { background:#fde8ea; color:var(--bad); } .badge.ended { background: #e5e8ef; color: #5b6780; }
 .bar { height:8px; background:var(--line); border-radius:99px; overflow:hidden; margin:6px 0; }
 .fill { height:100%; background:var(--ok); transition:width .3s; } .fill.full { background:var(--bad); }
 .scroll { overflow-x:auto; } table { width:100%; border-collapse:collapse; font-size:.92rem; }

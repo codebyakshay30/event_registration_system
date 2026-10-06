@@ -4,6 +4,7 @@ import api, { errMsg } from '../api.js';
 import { useAuth } from '../AuthContext.jsx';
 
 export const fmtDate = (d) => new Date(d).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+export const hasEnded = (ev) => new Date(ev.date) < new Date();
 
 export function SeatBar({ event }) {
   const pct = Math.min(100, (event.registeredCount / event.maxCapacity) * 100);
@@ -30,7 +31,9 @@ export default function Dashboard() {
     try { await api.delete(`/events/${id}`); load(); } catch (e) { setError(errMsg(e)); }
   };
 
-  const shown = events.filter((e) => e.title.toLowerCase().includes(search.toLowerCase()));
+  const shown = events
+    .filter((e) => e.title.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => Number(hasEnded(a)) - Number(hasEnded(b)));
 
   return (
     <>
@@ -49,7 +52,9 @@ export default function Dashboard() {
             <article className="card" key={ev._id}>
               <div className="row between">
                 <h2>{ev.title}</h2>
-                <span className={`badge ${ev.isFull ? 'full' : 'open'}`}>{ev.isFull ? 'Full' : 'Open'}</span>
+                <span className={`badge ${hasEnded(ev) ? 'ended' : ev.isFull ? 'full' : 'open'}`}>
+                  {hasEnded(ev) ? 'Ended' : ev.isFull ? 'Full' : 'Open'}
+                </span>
               </div>
               <p className="muted">{fmtDate(ev.date)} at {ev.venue}</p>
               <SeatBar event={ev} />

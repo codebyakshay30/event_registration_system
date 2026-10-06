@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api, { errMsg } from '../api.js';
 import { useAuth } from '../AuthContext.jsx';
-import { fmtDate, SeatBar } from './Dashboard.jsx';
+import { fmtDate, SeatBar, hasEnded } from './Dashboard.jsx';
 
 export default function EventDetails() {
   const { id } = useParams();
@@ -53,7 +53,9 @@ export default function EventDetails() {
       <div className="card">
         <div className="row between">
           <h1>{event.title}</h1>
-          <span className={`badge ${event.isFull ? 'full' : 'open'}`}>{event.isFull ? 'Registration closed' : `${event.seatsLeft} seats left`}</span>
+          <span className={`badge ${hasEnded(event) ? 'ended' : event.isFull ? 'full' : 'open'}`}>
+            {hasEnded(event) ? 'Event ended' : event.isFull ? 'Registration closed' : `${event.seatsLeft} seats left`}
+          </span>
         </div>
         <p className="muted">{fmtDate(event.date)} at {event.venue} | Organized by {event.organizer?.name}</p>
         {event.description && <p>{event.description}</p>}
@@ -67,6 +69,8 @@ export default function EventDetails() {
           <strong>You are registered for this event.</strong>
           <button className="btn danger small" onClick={cancel}>Cancel registration</button>
         </div>
+      ) : hasEnded(event) ? (
+        <p className="alert error">This event has ended. Registration is closed.</p>
       ) : event.isFull ? (
         <p className="alert error">This event has reached its maximum capacity. Registration is closed.</p>
       ) : (
